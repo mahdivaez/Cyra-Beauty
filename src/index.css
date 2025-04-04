@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Lora:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 20 43% 95%;
+    --foreground: 165 40% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 165 40% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 165 40% 17%;
+    --primary: 165 40% 17%;
+    --primary-foreground: 20 43% 95%;
+    --secondary: 45 68% 52%;
+    --secondary-foreground: 165 40% 17%;
+    --muted: 20 43% 92%;
+    --muted-foreground: 165 40% 30%;
+    --accent: 45 68% 52%;
+    --accent-foreground: 165 40% 17%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 20 43% 88%;
+    --input: 20 43% 88%;
+    --ring: 45 68% 52%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-lora;
+  }
+
+  /* Fade-In Animation for General Use */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  /* Staggered Animation for Lists */
+  .stagger-item {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+
+  /* Service Card Style */
+  .service-card {
+    @apply bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl;
+  }
+
+  /* Primary Button Style */
+  .btn-primary {
+    @apply bg-cyra-teal text-white font-montserrat font-medium py-3 px-6 rounded-md 
+           transition-all duration-300 hover:bg-opacity-90 hover:-translate-y-1 hover:shadow-md;
+  }
+
+  /* Secondary Button Style */
+  .btn-secondary {
+    @apply bg-cyra-gold text-cyra-teal font-montserrat font-medium py-2.5 px-5 rounded-md 
+           transition-all duration-300 hover:bg-opacity-90 hover:-translate-y-1 hover:shadow-md;
+  }
+
+  /* Section Title Style */
+  .section-title {
+    @apply font-montserrat text-3xl md:text-4xl font-semibold text-cyra-teal mb-3;
+  }
+
+  /* Section Subtitle Style */
+  .section-subtitle {
+    @apply font-lora text-lg text-cyra-teal/80 mb-8 max-w-2xl mx-auto;
+  }
+}
+
+@layer utilities {
+  /* Fade-In Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 1s ease-out forwards;
+  }
+
+  /* Bounce Animation */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .animate-bounce {
+    animation: bounce 2s infinite;
+  }
+
+  /* Custom Styles for Components */
+  /* Banner Component */
+  .banner-section {
+    @apply relative min-h-screen bg-[#F5E9E2] flex flex-col md:flex-row items-center justify-center;
+  }
+
+  .banner-text {
+    @apply w-full md:w-1/2 p-8 md:p-16 text-[#1A3C34] text-center md:text-left;
+  }
+
+  .banner-image {
+    @apply w-full md:w-1/2 h-[50vh] md:h-screen relative;
+  }
+
+  .banner-image img {
+    @apply w-full h-full object-cover object-center;
+    filter: grayscale(100%);
+  }
+
+  .google-review {
+    @apply bg-[#F5E9E2] py-4 flex justify-center items-center space-x-2;
+  }
+
+  /* FindUsFullPage Component */
+  .map-section {
+    @apply relative w-full h-[60vh] md:h-[70vh];
+  }
+
+  .map-container {
+    @apply w-full h-full shadow-2xl;
+  }
+
+  .map-overlay {
+    @apply absolute top-6 left-6 bg-white bg-opacity-95 px-6 py-3 rounded-lg shadow-lg animate-fadeIn;
+  }
+
+  .contact-section {
+    @apply w-full bg-white py-12 md:py-16;
+  }
+
+  .contact-container {
+    @apply max-w-6xl mx-auto px-4;
+  }
+
+  .contact-form {
+    @apply col-span-2 bg-[#F5E9E2] p-6 rounded-lg shadow-lg animate-fadeIn;
+  }
+
+  .floating-call-button {
+    @apply fixed bottom-6 right-6 bg-[#D4AF37] text-white p-4 rounded-full shadow-lg hover:bg-[#b89630] hover:scale-110 transition-all duration-200 animate-bounce;
+  }
+
+  /* About Component */
+  .about-section {
+    @apply py-20 px-6 md:px-12 bg-gradient-to-br from-[#F5E9E2] to-[#E8D5C4] relative overflow-hidden;
+  }
+
+  .about-background {
+    @apply absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/clean-gray-paper.png')];
+  }
+
+  .about-container {
+    @apply container mx-auto relative z-10;
+  }
+
+  .about-image {
+    @apply w-full h-[500px] rounded-2xl overflow-hidden shadow-lg relative;
+  }
+
+  .about-image img {
+    @apply w-full h-full object-cover group-hover:scale-105 transition-transform duration-500;
+  }
+
+  .about-image-overlay {
+    @apply absolute inset-0 bg-[#1A3C34]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center;
+  }
+
+  .quote-card {
+    @apply absolute -bottom-6 -right-6 bg-white rounded-lg shadow-lg p-6 max-w-[250px] animate-fadeIn;
+  }
+
+  .feature-item {
+    @apply flex items-start gap-4 group;
+  }
+
+  .feature-icon {
+    @apply w-12 h-12 rounded-full bg-[#1A3C34] flex items-center justify-center mt-1 group-hover:scale-110 transition-transform duration-300;
+  }
+
+  .feature-icon svg {
+    @apply text-white;
+  }
+
+  .feature-title {
+    @apply font-montserrat font-semibold text-xl text-[#1A3C34] group-hover:text-[#D4AF37] transition-colors duration-300;
+  }
+
+  .stat-card {
+    @apply bg-white rounded-lg p-6 shadow-lg animate-fadeIn;
+  }
+
+  /* Gallery Component */
+  .gallery-section {
+    @apply py-20 px-6 md:px-12 bg-[#F5E9E2] relative overflow-hidden;
+  }
+
+  .gallery-background {
+    @apply absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/clean-gray-paper.png')];
+  }
+
+  .gallery-container {
+    @apply container mx-auto relative z-10;
+  }
+
+  .gallery-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
+  }
+
+  .gallery-item {
+    @apply relative group rounded-lg overflow-hidden shadow-lg animate-fadeIn;
+  }
+
+  .gallery-item img {
+    @apply w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500;
+  }
+
+  .gallery-overlay {
+    @apply absolute inset-0 bg-[#1A3C34]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center;
+  }
+
+  .lightbox {
+    @apply fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 animate-fadeIn;
+  }
+
+  .lightbox-image {
+    @apply relative max-w-4xl w-full;
+  }
+
+  .lightbox-image img {
+    @apply w-full h-auto rounded-lg;
+  }
+
+  .modal {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+  }
+
+  .modal-content {
+    @apply bg-white p-8 rounded-lg max-w-md w-full relative animate-fadeIn;
+  }
+
+  .modal-close {
+    @apply absolute top-4 right-4 text-[#1A3C34] text-xl;
+  }
+
+  .form-input {
+    @apply w-full p-3 border border-[#1A3C34] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37];
+  }
+}
