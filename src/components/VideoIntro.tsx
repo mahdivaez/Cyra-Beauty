@@ -1,40 +1,31 @@
-import React, { useRef, useState, useEffect } from "react";
-import { FaPlay, FaPause } from "react-icons/fa";
-import { motion } from "framer-motion";
-import { MorphingText } from "@/components/magicui/morphing-text";
+"use client"
+
+import type React from "react"
+import { useRef, useState, useEffect } from "react"
+import { FaPlay, FaPause } from "react-icons/fa"
+import { motion } from "framer-motion"
+import { MorphingText } from "@/components/magicui/morphing-text"
 
 interface Video {
-  id: number;
-  title: string;
-  url: string; // Local file path
+  id: number
+  title: string
+  url: string // Local file path
 }
 
 const video: Video = {
   id: 1,
   title: "Welcome to Cyra Beauty Clinic",
   url: "/video1.mp4",
-};
+}
 
 // Beauty-themed text arrays for left and right sides
-const leftMorphTexts = [
-  "Glow",
-  "Radiance",
-  "Beauty",
-  "Elegance",
-  "Serenity",
-];
+const leftMorphTexts = ["Glow", "Radiance", "Beauty", "Elegance", "Serenity", "Skin", "Wellness", "Luxury"]
 
-const rightMorphTexts = [
-  "Transform",
-  "Confidence",
-  "Skin",
-  "Wellness",
-  "Luxury",
-];
+const rightMorphTexts = ["Skin", "Wellness", "Luxury"]
 
 const VideoIntro: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,45 +33,43 @@ const VideoIntro: React.FC = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             if (videoRef.current) {
-              videoRef.current
-                .play()
-                .catch((error) => {
-                  console.log("Autoplay prevented:", error);
-                });
-              setIsPlaying(true);
+              videoRef.current.play().catch((error) => {
+                console.log("Autoplay prevented:", error)
+              })
+              setIsPlaying(true)
             }
           } else {
             if (videoRef.current) {
-              videoRef.current.pause();
-              setIsPlaying(false);
+              videoRef.current.pause()
+              setIsPlaying(false)
             }
           }
-        });
+        })
       },
-      { threshold: 0.5 }
-    );
+      { threshold: 0.5 },
+    )
 
     if (videoRef.current) {
-      observer.observe(videoRef.current);
+      observer.observe(videoRef.current)
     }
 
     return () => {
       if (videoRef.current) {
-        observer.unobserve(videoRef.current);
+        observer.unobserve(videoRef.current)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   const togglePlayPause = () => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.pause();
+        videoRef.current.pause()
       } else {
-        videoRef.current.play().catch((error) => console.log("Play error:", error));
+        videoRef.current.play().catch((error) => console.log("Play error:", error))
       }
-      setIsPlaying(!isPlaying);
+      setIsPlaying(!isPlaying)
     }
-  };
+  }
 
   return (
     <section
@@ -91,31 +80,29 @@ const VideoIntro: React.FC = () => {
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/clean-gray-paper.png')] opacity-10"></div>
 
       <div className="container mx-auto relative z-10 max-w-6xl">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Left Morphing Text */}
+        {/* Main content container with improved text containment */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative">
+          {/* Left Morphing Text - Reduced size */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: -120 }}
+            animate={{ opacity: 1, x: -140 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="hidden md:block text-[#2C5F5B] font-serif text-2xl md:text-4xl font-bold text-center md:text-right w-full md:w-1/4"
+            className="hidden md:block text-[#2C5F5B] font-serif text-xs md:text-sm lg:text-base font-bold text-center md:text-right w-full md:w-1/4 px-2"
           >
-            <MorphingText texts={leftMorphTexts} />
+            <div className="md:pr-4">
+              <MorphingText texts={leftMorphTexts} />
+            </div>
           </motion.div>
 
-          {/* Video Component */}
+          {/* Video Component - Kept exactly as provided */}
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
             className="relative rounded-2xl overflow-hidden shadow-[0_15px_30px_rgba(44,95,91,0.2)] group w-full max-w-lg z-20"
           >
-            <div className="relative aspect-w-9 aspect-h-16 max-h-[80vh]">
-              <video
-                ref={videoRef}
-                loop
-                playsInline
-                className="w-full h-full object-cover brightness-95"
-              >
+            <div className="relative aspect-w-16 aspect-h-9 max-h-[80vh]">
+              <video ref={videoRef} loop playsInline className="w-full h-full object-cover brightness-95">
                 <source src={video.url} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -132,24 +119,32 @@ const VideoIntro: React.FC = () => {
               className="absolute bottom-4 right-6 inline-flex items-center justify-center bg-[#C9AD7F]/80 text-[#2C5F5B] w-12 h-12 rounded-full shadow-md hover:bg-[#C9AD7F] transition-all duration-300"
               aria-label={isPlaying ? "Pause video" : "Play video"}
             >
-              {isPlaying ? (
-                <FaPause size={16} />
-              ) : (
-                <FaPlay size={16} className="ml-0.5" />
-              )}
+              {isPlaying ? <FaPause size={16} /> : <FaPlay size={16} className="ml-0.5" />}
             </motion.button>
           </motion.div>
 
-          {/* Right Morphing Text */}
+          {/* Right Morphing Text - Reduced size */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="hidden md:block text-[#2C5F5B] mr-6 font-serif text-2xl md:text-2xl font-bold text-center md:text-left w-full md:w-1/4"
+            className="hidden md:block text-[#2C5F5B] font-serif text-xs md:text-sm lg:text-base font-bold text-center md:text-left w-full md:w-1/4 px-2"
           >
-            <MorphingText texts={rightMorphTexts} />
+            <div className="md:pl-4">
+              <MorphingText texts={rightMorphTexts} />
+            </div>
           </motion.div>
         </div>
+
+        {/* Mobile Morphing Text - Only visible on mobile */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="md:hidden text-[#2C5F5B] font-serif text-base font-bold text-center mt-4"
+        >
+          <MorphingText texts={[...leftMorphTexts, ...rightMorphTexts]} />
+        </motion.div>
 
         <div className="mt-8 text-center">
           <motion.h2
@@ -188,7 +183,7 @@ const VideoIntro: React.FC = () => {
       <div className="absolute top-0 left-0 w-24 h-24 bg-[#C9AD7F]/20 rounded-full blur-2xl -translate-x-1/2 translate-y-1/2 animate-pulse"></div>
       <div className="absolute bottom-0 right-0 w-36 h-36 bg-[#2C5F5B]/20 rounded-full blur-2xl translate-x-1/4 -translate-y-1/4 animate-pulse"></div>
     </section>
-  );
-};
+  )
+}
 
-export default VideoIntro;
+export default VideoIntro
