@@ -129,7 +129,7 @@ const VideoIntro: React.FC = () => {
               transition={{ delay: 0.7, duration: 0.8, ease: "backOut" }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="absolute bottom-4 right-4 inline-flex items-center justify-center bg-[#C9AD7F]/80 text-[#2C5F5B] w-12 h-12 rounded-full shadow-md hover:bg-[#C9AD7F] transition-all duration-300"
+              className="absolute bottom-4 right-6 inline-flex items-center justify-center bg-[#C9AD7F]/80 text-[#2C5F5B] w-12 h-12 rounded-full shadow-md hover:bg-[#C9AD7F] transition-all duration-300"
               aria-label={isPlaying ? "Pause video" : "Play video"}
             >
               {isPlaying ? (
@@ -145,7 +145,7 @@ const VideoIntro: React.FC = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="hidden md:block text-[#2C5F5B] font-serif text-2xl md:text-4xl font-bold text-center md:text-left w-full md:w-1/4"
+            className="hidden md:block text-[#2C5F5B] mr-6 font-serif text-2xl md:text-2xl font-bold text-center md:text-left w-full md:w-1/4"
           >
             <MorphingText texts={rightMorphTexts} />
           </motion.div>

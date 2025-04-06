@@ -27,20 +27,15 @@ const Index = () => {
       <Hero/>
       <VideoIntro/>
       <CustomVelocityScroll2/>
-
       <ScrollComponent />
-    
       <Services />
       <CustomVelocityScroll/>
-
       <About />
       <Gallery/>
- 
       <Testimonials />
       <TeamSection/>
       <Booking />
       <FindUsFullPage/>
-      {/* <FindUs/> */}
       <Footer />
       <StickyBooking />
     </div>

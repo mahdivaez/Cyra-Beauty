@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
+"use client"
+
+import type React from "react"
+import { useState, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
 
 // Define available services
 const AVAILABLE_SERVICES = [
@@ -8,25 +15,25 @@ const AVAILABLE_SERVICES = [
   "HydraFacial",
   "Wrinkle Treatment",
   "PRP Treatment",
-  "Scar Treatment"
-] as const;
+  "Scar Treatment",
+] as const
 
-type ServiceType = typeof AVAILABLE_SERVICES[number];
+type ServiceType = (typeof AVAILABLE_SERVICES)[number]
 
 interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  service: ServiceType;
+  name: string
+  email: string
+  phone: string
+  service: ServiceType
 }
 
 interface Testimonial {
-  id: number;
-  name: string;
-  service: ServiceType;
-  image: string;
-  text: string;
-  rating: number;
+  id: number
+  name: string
+  service: ServiceType
+  image: string
+  text: string
+  rating: number
 }
 
 const testimonials: Testimonial[] = [
@@ -75,149 +82,142 @@ const testimonials: Testimonial[] = [
     name: "Lisa Nguyen",
     service: "Laser Hair Removal",
     image: "https://randomuser.me/api/portraits/women/58.jpg",
-    text: "I’m so impressed with the laser hair removal service! The clinic is spotless, and the team is super professional.",
+    text: "I'm so impressed with the laser hair removal service! The clinic is spotless, and the team is super professional.",
     rating: 5,
   },
-];
+]
 
 const Testimonials: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const [isFormVisible, setIsFormVisible] = useState(false)
+  const [selectedService, setSelectedService] = useState<ServiceType | null>(null)
 
   useEffect(() => {
     if (!isPaused) {
       const interval = setInterval(() => {
-        setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-      }, 5000);
-      return () => clearInterval(interval);
+        setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
+      }, 5000)
+      return () => clearInterval(interval)
     }
-  }, [isPaused]);
+  }, [isPaused])
 
   const goToPrevious = () => {
-    setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
+    setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
+  }
 
   const goToNext = () => {
-    setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-  };
+    setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
+  }
 
-  const { register, handleSubmit, reset, setValue } = useForm<FormData>();
+  const { register, handleSubmit, reset, setValue } = useForm<FormData>()
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    setIsFormVisible(false);
-    setSelectedService(null);
-    reset();
-  };
+    console.log(data)
+    setIsFormVisible(false)
+    setSelectedService(null)
+    reset()
+  }
 
   const openForm = (service: ServiceType) => {
     if (AVAILABLE_SERVICES.includes(service)) {
-      setSelectedService(service);
-      setValue("service", service);
-      setIsFormVisible(true);
+      setSelectedService(service)
+      setValue("service", service)
+      setIsFormVisible(true)
     }
-  };
+  }
 
   return (
     <section
       id="testimonials"
-      className="py-20 px-6 bg-gradient-to-br from-[#F5E9E2] to-[#E8D5C4] relative overflow-hidden"
+      className="py-12 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-[#F5E9E2] to-[#E8D5C4] relative overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/clean-gray-paper.png')]"></div>
+      <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMwLTkuOTQtOC4wNi0xOC0xOC0xOHY2YzYuNjMgMCAxMiA1LjM3IDEyIDEyaC0xMnY2aDEydjEyYzAgNi42My01LjM3IDEyLTEyIDEydjZjOS45NCAwIDE4LTguMDYgMTgtMTh2LTE4eiIgZmlsbD0icmdiYSgyNiwgNjAsIDUyLCAwLjAzKSIvPjwvZz48L3N2Zz4=')]"></div>
 
       <div className="container mx-auto relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="section-title animate-fadeIn">What Our Clients Say</h2>
-          <p className="section-subtitle animate-fadeIn">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1A3C34] mb-2 sm:mb-4">
+            What Our Clients Say
+          </h2>
+          <p className="text-sm sm:text-base text-[#1A3C34]/70 max-w-2xl mx-auto">
             Real stories from real clients who have experienced our transformative treatments.
           </p>
         </div>
 
         <div className="relative max-w-5xl mx-auto">
+          {/* Navigation Buttons */}
           <button
             onClick={goToPrevious}
-            className="absolute top-1/2 -left-6 md:-left-12 transform -translate-y-1/2 bg-[#1A3C34] text-white p-3 rounded-full shadow-lg hover:bg-[#D4AF37] transition-all duration-300 z-10"
+            className="absolute top-1/2 -translate-y-1/2 -left-2 sm:-left-6 md:-left-12 bg-[#1A3C34] text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-[#D4AF37] transition-all duration-300 z-10"
             aria-label="Previous testimonial"
           >
-            <FaChevronLeft size={20} />
+            <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
           <button
             onClick={goToNext}
-            className="absolute top-1/2 -right-6 md:-right-12 transform -translate-y-1/2 bg-[#1A3C34] text-white p-3 rounded-full shadow-lg hover:bg-[#D4AF37] transition-all duration-300 z-10"
+            className="absolute top-1/2 -translate-y-1/2 -right-2 sm:-right-6 md:-right-12 bg-[#1A3C34] text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-[#D4AF37] transition-all duration-300 z-10"
             aria-label="Next testimonial"
           >
-            <FaChevronRight size={20} />
+            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
 
+          {/* Testimonial Carousel */}
           <div className="overflow-hidden">
             <div
               className="transition-transform duration-500 ease-in-out flex"
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
             >
               {testimonials.map((testimonial) => (
-                <div key={testimonial.id} className="min-w-full px-4">
-                  <div className="bg-white rounded-2xl p-8 md:p-10 relative shadow-lg group hover:shadow-xl transition-all duration-300">
-                    <div className="absolute top-6 right-6 opacity-20">
-                      <svg
-                        width="40"
-                        height="40"
-                        viewBox="0 0 40 40"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10.5 25.5C12.5 25.5 14 24 14 21.5C14 19 12.5 17.5 10.5 17.5C8.5 17.5 7 19 7 21.5L7 22.5C7 28 11 31.5 16.5 31.5V28.5C13 28.5 10.5 26.5 10.5 22.5V25.5ZM25.5 25.5C27.5 25.5 29 24 29 21.5C29 19 27.5 17.5 25.5 17.5C23.5 17.5 22 19 22 21.5L22 22.5C22 28 26 31.5 31.5 31.5V28.5C28 28.5 25.5 26.5 25.5 22.5V25.5Z"
-                          fill="#D4AF37"
-                        />
-                      </svg>
+                <div key={testimonial.id} className="min-w-full px-2 sm:px-4">
+                  <div className="bg-white rounded-2xl p-5 sm:p-8 md:p-10 relative shadow-lg transition-all duration-300 hover:shadow-xl">
+                    {/* Quote Icon */}
+                    <div className="absolute top-4 right-4 sm:top-6 sm:right-6 opacity-20">
+                      <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-[#D4AF37]" />
                     </div>
 
-                    <div className="absolute top-4 left-4 bg-[#D4AF37] text-white text-xs font-montserrat px-3 py-1 rounded-full">
+                    {/* Verified Badge - Positioned better for mobile */}
+                    <Badge className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white text-[10px] sm:text-xs px-2 py-0.5 sm:px-3 sm:py-1 rounded-full">
                       Verified Client
-                    </div>
+                    </Badge>
 
-                    <div className="flex flex-col md:flex-row md:items-start gap-6">
-                      <div className="w-20 h-20 rounded-full overflow-hidden relative group-hover:scale-105 transition-transform duration-300">
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6 pt-8 sm:pt-4">
+                      {/* Client Image */}
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden mx-auto sm:mx-0">
                         <img
-                          src={testimonial.image}
+                          src={testimonial.image || "/placeholder.svg"}
                           alt={testimonial.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
 
-                      <div className="flex-1">
-                        <div className="flex items-center mb-3">
+                      {/* Testimonial Content */}
+                      <div className="flex-1 text-center sm:text-left">
+                        {/* Star Rating */}
+                        <div className="flex items-center justify-center sm:justify-start mb-2 sm:mb-3">
                           {Array.from({ length: testimonial.rating }).map((_, i) => (
-                            <FaStar
-                              key={i}
-                              size={16}
-                              className="text-[#D4AF37] drop-shadow-sm"
-                            />
+                            <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 fill-[#D4AF37] text-[#D4AF37]" />
                           ))}
                         </div>
 
-                        <p className="font-lora text-lg text-[#1A3C34] mb-4 line-clamp-4 group-hover:line-clamp-none transition-all duration-300">
+                        {/* Testimonial Text */}
+                        <p className="text-sm sm:text-base md:text-lg text-[#1A3C34] mb-3 sm:mb-4 line-clamp-4 sm:line-clamp-none">
                           "{testimonial.text}"
                         </p>
 
+                        {/* Client Info */}
                         <div className="mb-4">
-                          <p className="font-montserrat font-medium text-[#1A3C34]">
-                            {testimonial.name}
-                          </p>
-                          <p className="text-sm text-[#1A3C34]/70">
-                            {testimonial.service}
-                          </p>
+                          <p className="font-medium text-[#1A3C34] text-base sm:text-lg">{testimonial.name}</p>
+                          <p className="text-xs sm:text-sm text-[#1A3C34]/70">{testimonial.service}</p>
                         </div>
 
-                        <button
+                        {/* Book Button - Always visible on mobile */}
+                        <Button
                           onClick={() => openForm(testimonial.service)}
-                          className="btn-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          className="bg-[#1A3C34] hover:bg-[#1A3C34]/90 text-white text-xs sm:text-sm py-2 px-3 sm:px-4 rounded-full"
                         >
                           Book This Service
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -226,12 +226,13 @@ const Testimonials: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-center mt-8 gap-2">
+          {/* Pagination Dots */}
+          <div className="flex justify-center mt-4 sm:mt-8 gap-1 sm:gap-2">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
+                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
                   index === activeIndex ? "bg-[#D4AF37]" : "bg-[#F5E9E2]"
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
@@ -240,70 +241,75 @@ const Testimonials: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-8 sm:mt-12 text-center">
           <a
             href="https://www.google.com/search?q=Cyra+Beauty,+Health+and+Laser+Clinic"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-montserrat text-[#1A3C34] hover:text-[#D4AF37] transition-colors duration-300"
+            className="text-sm sm:text-base text-[#1A3C34] hover:text-[#D4AF37] transition-colors duration-300"
           >
             See All Reviews on Google
           </a>
         </div>
       </div>
 
+      {/* Booking Form Modal */}
       {isFormVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg max-w-md w-full relative animate-fadeIn">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-5 sm:p-8 rounded-lg max-w-md w-full relative animate-fadeIn">
             <button
               onClick={() => setIsFormVisible(false)}
-              className="absolute top-4 right-4 text-[#1A3C34] text-xl"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-[#1A3C34] text-xl"
             >
               ✕
             </button>
-            <h2 className="text-2xl font-bold text-[#1A3C34] mb-4">Book Your Appointment</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-[#1A3C34] mb-4">Book Your Appointment</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <input
+              <Input
                 {...register("name", { required: true })}
                 placeholder="Name"
                 className="w-full p-3 border border-[#1A3C34] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                 required
               />
-              <input
+              <Input
                 {...register("email", { required: true })}
                 placeholder="Email"
                 type="email"
                 className="w-full p-3 border border-[#1A3C34] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                 required
               />
-              <input
+              <Input
                 {...register("phone", { required: true })}
                 placeholder="Phone"
                 type="tel"
                 className="w-full p-3 border border-[#1A3C34] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                 required
               />
-              <select
-                {...register("service", { required: true })}
-                value={selectedService || ""}
-                onChange={(e) => setSelectedService(e.target.value as ServiceType)}
-                className="w-full p-3 border border-[#1A3C34] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+              <Select
+                defaultValue={selectedService || undefined}
+                onValueChange={(value) => setValue("service", value as ServiceType)}
               >
-                {AVAILABLE_SERVICES.map((service) => (
-                  <option key={service} value={service}>
-                    {service}
-                  </option>
-                ))}
-              </select>
-              <button type="submit" className="btn-primary w-full">
+                <SelectTrigger className="w-full p-3 border border-[#1A3C34] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]">
+                  <SelectValue placeholder="Select a service" />
+                </SelectTrigger>
+                <SelectContent>
+                  {AVAILABLE_SERVICES.map((service) => (
+                    <SelectItem key={service} value={service}>
+                      {service}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button type="submit" className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white">
                 Submit
-              </button>
+              </Button>
             </form>
           </div>
         </div>
       )}
     </section>
-  );
-};
+  )
+}
 
-export default Testimonials;
+export default Testimonials
+

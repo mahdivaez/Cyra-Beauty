@@ -16,14 +16,13 @@ const FindUsFullPage: React.FC = () => {
   const address = "3056 Glen Dr Unit 204, Coquitlam, BC V3B 0V1, Canada";
   const phone = "+1 778-504-5400";
   const coordinates: [number, number] = [49.282670069485164, -122.79079514232714];
-  const [isFormVisible, setIsFormVisible] = useState(false);
   const [appointmentCount, setAppointmentCount] = useState(0);
 
   // Simulate live appointment counter
   useEffect(() => {
     const interval = setInterval(() => {
       setAppointmentCount((prev) => (prev < 10 ? prev + 1 : prev));
-    }, 3000); // Increment every 3 seconds
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -40,21 +39,34 @@ const FindUsFullPage: React.FC = () => {
       attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
     }).addTo(map);
 
+    // Define custom icon with transparent background
     const customIcon = L.icon({
-      iconUrl: "/clinic-marker.png", // Ensure this file exists in public folder
-      iconSize: [38, 55],
-      iconAnchor: [19, 55],
-      popupAnchor: [0, -55],
+      iconUrl: "/clinic-marker.png", // Use PNG with transparent background
+      iconSize: [30, 30], // Adjust size as needed
+      iconAnchor: [27.5, 55], // Center horizontally, anchor at bottom
+      popupAnchor: [0, -55], // Popup above the marker
+      shadowUrl: undefined, // No shadow to avoid background
     });
 
-    L.marker(coordinates, { icon: customIcon })
-      .addTo(map)
-      .bindPopup(`
+    // Add marker with error handling
+    try {
+      const marker = L.marker(coordinates, { icon: customIcon }).addTo(map);
+      marker.bindPopup(`
         <div style="text-align: center; font-family: 'Poppins', sans-serif;">
           <b>Cyra Beauty Clinic</b><br>
           ${address}
         </div>
       `);
+    } catch (error) {
+      console.error("Failed to load marker:", error);
+      // Fallback to default marker
+      L.marker(coordinates).addTo(map).bindPopup(`
+        <div style="text-align: center; font-family: 'Poppins', sans-serif;">
+          <b>Cyra Beauty Clinic</b><br>
+          ${address}
+        </div>
+      `);
+    }
 
     const zoomControl = L.control.zoom({ position: "bottomright" });
     zoomControl.addTo(map);
@@ -71,16 +83,14 @@ const FindUsFullPage: React.FC = () => {
     };
   }, []);
 
-  // Form handling with React Hook Form
   const { register, handleSubmit, reset } = useForm<FormData>();
   const onSubmit = (data: FormData) => {
-    console.log(data); // Replace with API call (e.g., Formspree or HubSpot)
-    setIsFormVisible(false); // Close form after submission
-    reset(); // Reset form fields
+    console.log(data);
+    reset();
   };
 
   return (
-    <div className="font-poppins bg-[#F5E9E2] min-h-screen">
+    <div className="font-poppins bg-[#F5E9E2] min-h-screen relative">
       {/* Map Section */}
       <section className="relative w-full h-[60vh] md:h-[70vh]">
         <div ref={mapRef} className="w-full h-full shadow-2xl"></div>
@@ -89,7 +99,6 @@ const FindUsFullPage: React.FC = () => {
             Find Us Here
           </h3>
         </div>
-        {/* Get Directions Button on Map */}
         <div className="absolute bottom-6 right-6">
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -154,19 +163,19 @@ const FindUsFullPage: React.FC = () => {
               <div className="flex items-start text-gray-700 animate-fadeIn">
                 <FaClock className="text-[#D4AF37] mr-4 mt-1 text-2xl" />
                 <div>
-  <span className="font-semibold text-[#1A3C34] block">
-    Hours:
-  </span>
-  <ul className="list-none pl-0 mt-2 space-y-1">
-    <li>Monday: Closed</li>
-    <li>Tuesday: 10:00–18:00</li>
-    <li>Wednesday: 10:00–18:00</li>
-    <li>Thursday: 10:00–18:00</li>
-    <li>Friday: 10:00–18:00</li>
-    <li>Saturday: 10:00–17:00</li>
-    <li>Sunday: Closed</li>
-  </ul>
-</div>
+                  <span className="font-semibold text-[#1A3C34] block">
+                    Hours:
+                  </span>
+                  <ul className="list-none pl-0 mt-2 space-y-1">
+                    <li>Monday: Closed</li>
+                    <li>Tuesday: 10:00–18:00</li>
+                    <li>Wednesday: 10:00–18:00</li>
+                    <li>Thursday: 10:00–18:00</li>
+                    <li>Friday: 10:00–18:00</li>
+                    <li>Saturday: 10:00–17:00</li>
+                    <li>Sunday: Closed</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -214,17 +223,16 @@ const FindUsFullPage: React.FC = () => {
                   type="submit"
                   className="w-full bg-[#D4AF37] text-white py-3 rounded-lg text-lg font-medium hover:bg-[#b89630] hover:scale-105 transition-all duration-200 shadow-md"
                 >
-                    <a
-                  href="https://cyrabeauty.janeapp.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full  text-white py-3 rounded-lg text-lg font-medium hover:bg-[#b89630] hover:scale-105 transition-all text-center"
-                >
-                  Book Appointment
-                </a>
+                  <a
+                    href="https://cyrabeauty.janeapp.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-white text-center"
+                  >
+                    Book Appointment
+                  </a>
                 </button>
               </form>
-              {/* Live Appointment Counter */}
               <div className="mt-4 text-center text-sm text-[#1A3C34]">
                 <span className="font-bold">{appointmentCount}+</span>{" "}
                 appointments booked today
@@ -232,7 +240,6 @@ const FindUsFullPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Additional Information: Nearby Landmarks */}
           <div className="mt-12">
             <h3 className="text-2xl font-semibold text-[#1A3C34] text-center mb-4 animate-fadeIn">
               Getting Here
@@ -242,7 +249,6 @@ const FindUsFullPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Social Proof: Google Reviews */}
           <div className="mt-12 bg-[#F5E9E2] py-6 rounded-lg shadow-lg">
             <div className="flex justify-center items-center space-x-2">
               <a
@@ -276,7 +282,7 @@ const FindUsFullPage: React.FC = () => {
       {/* Floating Call Now Button */}
       <a
         href={`tel:${phone}`}
-        className="fixed bottom-6 right-6 bg-[#D4AF37] text-white p-4 rounded-full shadow-lg hover:bg-[#b89630] hover:scale-110 transition-all duration-200 animate-bounce"
+        className="fixed bottom-6 right-6 bg-[#D4AF37] text-white p-4 rounded-full shadow-lg hover:bg-[#b89630] hover:scale-110 transition-all duration-200 animate-bounce z-[1000]"
       >
         <FaPhone className="text-2xl" />
       </a>
@@ -285,4 +291,3 @@ const FindUsFullPage: React.FC = () => {
 };
 
 export default FindUsFullPage;
-
